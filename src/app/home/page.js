@@ -55,8 +55,8 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section className="p-6 max-w-[95rem] mx-auto bg-[#111111] rounded-xl mt-8 h-[15rem]">
-          <h1 className={`text-gray-400 py-6 px-4 mt-12 text-center text-4xl ${monoton.className}`}>Under Construction, more<br />features on the Way!</h1>
+        <section className="p-6 max-w-[95rem] mx-auto bg-[#111111] rounded-xl mt-8 min-h-[15rem]">
+          <h1 className={`text-gray-400  text-center text-5xl ${monoton.className}`}>Under Construction, more<br />features on the Way!</h1>
         </section>
       </div>
 
