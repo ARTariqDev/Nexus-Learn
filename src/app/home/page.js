@@ -4,6 +4,14 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Resources from '@/components/resources'
 import Header from '@/components/header'
+import { Monoton } from 'next/font/google'
+
+// Load Monoton font
+const monoton = Monoton({
+  weight: '400',
+  subsets: ['latin'],
+  display: 'swap',
+})
 
 export default function HomePage() {
   const [user, setUser] = useState(null)
@@ -20,14 +28,12 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-[#000000] text-white">
-
       <div className="border-b border-[#1a1a1a] shadow-md">
         <Header />
       </div>
 
-
       <section className="p-6 max-w-[95rem] mx-auto bg-[#111111] rounded-xl mt-8">
-        <h1 className="text-center text-white font-[Monoton] text-3xl mb-8">
+        <h1 className={`${monoton.className} text-center text-white text-3xl mb-8`}>
           Resources
         </h1>
 

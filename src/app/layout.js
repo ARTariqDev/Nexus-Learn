@@ -1,4 +1,5 @@
 import { Geist, Geist_Mono } from "next/font/google";
+import { Monoton } from "next/font/google";
 import "./globals.css";
 
 // Font setup
@@ -12,7 +13,12 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-// Metadata (shown in tab title)
+const monoton = Monoton({
+  weight: "400",
+  subsets: ["latin"],
+  display: "swap",
+});
+
 export const metadata = {
   title: "Nexus Learn",
   description: "Learning platform for O/A Levels and SAT",
@@ -20,10 +26,8 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-[#111111] text-white min-h-screen`}
-      >
+    <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
+      <body className="antialiased bg-[#111111] text-white min-h-screen font-sans">
         {children}
       </body>
     </html>

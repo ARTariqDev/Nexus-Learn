@@ -1,22 +1,28 @@
 'use client'
 
-import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { Monoton } from 'next/font/google';
+
+// Load Monoton font
+const monoton = Monoton({
+  weight: '400',
+  subsets: ['latin'],
+  display: 'swap',
+});
 
 export default function LandingPage() {
   const [fadeIn, setFadeIn] = useState(false);
 
   useEffect(() => {
-
     setFadeIn(true);
   }, []);
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-[#111111] px-4 py-12 text-white transition-opacity duration-1000 ease-in-out"
-      style={{ opacity: fadeIn ? 1 : 0 }}
+    <div
+      className={`min-h-screen flex flex-col items-center justify-center bg-[#111111] px-4 py-12 text-white transition-opacity duration-1000 ease-in-out ${fadeIn ? "opacity-100" : "opacity-0"}`}
     >
-      <h1 className="text-8xl font-[Monoton] text-[#ffffff] mb-4 animate-glow text-center">
+      <h1 className={`${monoton.className} text-8xl text-[#ffffff] mb-6 animate-glow text-center`}>
         Nexus Learn
       </h1>
 
@@ -39,4 +45,3 @@ export default function LandingPage() {
     </div>
   );
 }
-
