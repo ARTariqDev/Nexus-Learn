@@ -22,7 +22,7 @@
 - **Dynamic Resources Section**
 - **Responsive Layouts with Transitions**
 - **LocalStorage Token Management**
-- **Expandable for Stats, Tutorials and Progress**
+- **Expandable for Stats, Tutorials & Progress**
 
 ---
 
