@@ -13,7 +13,7 @@ const Resources = (props) => {
   return (
     <div className="group bg-[#111111] border-2 border-[#6c6c6c] rounded-2xl p-6 shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300 flex flex-col justify-between h-[15rem] w-[20rem] transform">
       <h2
-        className={`${monoton.className} text-5xl text-[#ffaa00] text-center mb-4 break-words leading-snug mt-4 group-hover:glow transition-all duration-300`}
+        className={`${monoton.className} text-5xl text-[#ffaa00] text-center mb-4 break-words leading-snug mt-4 group-hover:glow transition-all duration-300 py-5`}
       >
         {props.head}
       </h2>
