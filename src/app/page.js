@@ -20,7 +20,7 @@ export default function LandingPage() {
 
   return (
     <div
-      className={`min-h-screen flex flex-col items-center justify-center bg-[#111111] px-4 py-12 text-white transition-opacity duration-1000 ease-in-out ${fadeIn ? "opacity-100" : "opacity-0"}`}
+      className={`min-h-screen flex flex-col items-center justify-center bg-[#000000] px-4 py-12 text-white transition-opacity duration-1000 ease-in-out ${fadeIn ? "opacity-100" : "opacity-0"}`}
     >
       <h1 className={`${monoton.className} text-8xl text-[#ffffff] mb-6 animate-glow text-center`}>
         Nexus Learn
