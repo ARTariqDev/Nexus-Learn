@@ -9,12 +9,12 @@ const monoton = Monoton({
 
 const Header = () => {
   return (
-    <header className="bg-[#121212] text-white px-6 py-4 flex flex-col sm:flex-row items-center justify-between shadow-md">
-      <div className={`${monoton.className} text-3xl animate-glow`}>
+    <header className={`${monoton.className} bg-[#121212] text-white px-6 py-4 flex flex-col sm:flex-row items-center justify-between shadow-md`}>
+      <div className="text-3xl animate-glow">
         <Link href="/home">Nexus Learn</Link>
       </div>
 
-      <nav className="space-x-4 sm:space-x-6 mt-2 sm:mt-0 text-sm sm:text-base font-semibold">
+      <nav className="space-x-4 sm:space-x-6 mt-2 sm:mt-0 text-sm sm:text-base">
         <Link href="/stats" className="hover:text-[#ffaa00] hover:underline underline-offset-4 transition-colors">
           Stats
         </Link>
@@ -25,7 +25,7 @@ const Header = () => {
           Settings
         </Link>
         <Link href="/" className="hover:text-[#ec6262] hover:underline underline-offset-4 transition-colors">
-          LogOut
+          Log-Out
         </Link>
       </nav>
     </header>
