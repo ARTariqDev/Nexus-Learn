@@ -52,6 +52,10 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      <section className="p-6 max-w-[95rem] mx-auto bg-[#111111] rounded-xl mt-8">
+        <h1>Under Construction, more features on the Way !</h1>
+      </section>
     </div>
   )
 }
