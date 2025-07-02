@@ -21,3 +21,5 @@ export async function connectToDB() {
     throw error;
   }
 }
+
+export default connectToDB;

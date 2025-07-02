@@ -15,14 +15,26 @@ const Header = () => {
       </div>
 
       <nav className="space-x-4 sm:space-x-6 mt-2 sm:mt-0 text-sm sm:text-base">
+        <Link href="/home" className="hover:text-[#ffaa00] hover:underline underline-offset-4 transition-colors">
+          Home 
+        </Link>
+        <Link href="/home/Alevel" className="hover:text-[#ffaa00] hover:underline underline-offset-4 transition-colors">
+          ALevel
+        </Link>
+        <Link href="/home/Olevel" className="hover:text-[#ffaa00] hover:underline underline-offset-4 transition-colors">
+          OLevel
+        </Link>
+        <Link href="/home/IGCSE" className="hover:text-[#ffaa00] hover:underline underline-offset-4 transition-colors">
+          IGCSE
+        </Link>
+        <Link href="/home/SAT" className="hover:text-[#ffaa00] hover:underline underline-offset-4 transition-colors">
+          SAT
+        </Link>
         <Link href="/stats" className="hover:text-[#ffaa00] hover:underline underline-offset-4 transition-colors">
           Stats
         </Link>
         <Link href="/tutorials" className="hover:text-[#ffaa00] hover:underline underline-offset-4 transition-colors">
           Tutorials
-        </Link>
-        <Link href="/settings" className="hover:text-[#ffaa00] hover:underline underline-offset-4 transition-colors">
-          Settings
         </Link>
         <Link href="/" className="hover:text-[#ec6262] hover:underline underline-offset-4 transition-colors">
           Log-Out
