@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Monoton } from 'next/font/google';
 
+
 // Load Monoton font
 const monoton = Monoton({
   weight: '400',
