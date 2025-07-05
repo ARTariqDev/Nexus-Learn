@@ -23,7 +23,29 @@ const monoton = Monoton({
 export const metadata = {
   title: "Nexus Learn",
   description: "Learning platform for O/A Levels and SAT",
+  openGraph: {
+    title: "Nexus Learn",
+    description: "Learning platform for O/A Levels and SAT",
+    url: "https://nexuslearn-mu.vercel.app/", // will update if custom domain differs
+    siteName: "Nexus Learn",
+    images: [
+      {
+        url: "/logo.png",
+        width: 253,
+        height: 63,
+        alt: "Nexus Learn Logo",
+      },
+    ],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Nexus Learn",
+    description: "Learning platform for O/A Levels and SAT",
+    images: ["/logo.png"],
+  },
 };
+
 
 export default function RootLayout({ children }) {
   return (
