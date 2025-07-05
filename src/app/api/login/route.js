@@ -45,4 +45,5 @@ export async function POST(req) {
       status: 500,
     });
   }
+  localStorage.setItem('token', token);
 }
