@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Monoton } from 'next/font/google';
+import { useRouter } from 'next/navigation'
 
 
 // Load Monoton font
@@ -14,6 +15,14 @@ const monoton = Monoton({
 
 export default function LandingPage() {
   const [fadeIn, setFadeIn] = useState(false);
+  const router = useRouter()
+
+  useEffect(() => {
+    const token = localStorage.getItem('token')
+    if (token) {
+      router.push('/home')
+    }
+  }, [])
 
   useEffect(() => {
     setFadeIn(true);

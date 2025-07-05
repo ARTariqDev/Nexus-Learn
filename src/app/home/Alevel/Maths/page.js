@@ -37,7 +37,7 @@ export default function HomePage() {
       </div>
 
       <div className="flex-1">
-        <section className="p-6 max-w-[95rem] mx-auto bg-[#111111] rounded-xl mt-8">
+        <section className="p-6 max-w-[95rem] mx-auto bg-[#111111] rounded-xl mt-8 fade-in">
           <div className="flex items-center justify-between mb-4">
             <h1 className={`${monoton.className} text-white text-3xl`}>
               Topicals P1
@@ -87,8 +87,8 @@ export default function HomePage() {
             </div>
           </div>
         </section>
-                <section className="p-6 max-w-[95rem] mx-auto bg-[#111111] rounded-xl mt-8">
-          <div className="flex items-center justify-between mb-4">
+        <section className="p-6 max-w-[95rem] mx-auto bg-[#111111] rounded-xl mt-8 fade-in">
+          <div className="flex items-center justify-between mb-4 fade-in">
             <h1 className={`${monoton.className} text-white text-3xl`}>
               Topicals P3
             </h1>

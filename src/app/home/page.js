@@ -15,6 +15,7 @@ const monoton = Monoton({
 })
 
 export default function HomePage() {
+  const [isLoading, setIsLoading] = useState(true)
   const [user, setUser] = useState(null)
   const router = useRouter()
 
@@ -23,9 +24,20 @@ export default function HomePage() {
     if (!token) {
       router.push('/login')
     } else {
-      setUser({ username: 'User' })
+      setUser({ username: 'User' }) // optionally decode token if JWT
     }
+    setIsLoading(false)
   }, [])
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-screen bg-black text-white text-xl">
+        Loading...
+      </div>
+    )
+  }
+
+  if (!user) return null // Prevent flicker before redirect
 
   return (
     <div className="min-h-screen flex flex-col bg-[#000000] text-white">
@@ -56,7 +68,9 @@ export default function HomePage() {
         </section>
 
         <section className="p-6 max-w-[95rem] mx-auto bg-[#111111] rounded-xl mt-8 min-h-[15rem]">
-          <h1 className={`text-gray-400  text-center text-5xl ${monoton.className}`}>Under Construction, more<br />features on the Way!</h1>
+          <h1 className={`text-gray-400  text-center text-5xl ${monoton.className}`}>
+            Under Construction, more<br />features on the Way!
+          </h1>
         </section>
       </div>
 
@@ -64,4 +78,3 @@ export default function HomePage() {
     </div>
   )
 }
-

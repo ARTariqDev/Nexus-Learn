@@ -41,10 +41,10 @@ export default function HomePage() {
               <Resources head="Computer Science 9618" link="Alevel/CS" size="3"/>
             </div>
             <div className="fade-in fade-delay-4 mx-auto">
-              <Resources head="Further Maths 9231" link="FM" size="3"/>
+              <Resources head="Further Maths 9231" link="Alevel/FM" size="3"/>
             </div>
             <div className="fade-in fade-delay-4 mx-auto">
-              <Resources head="Information Technology 9626" link="IT" size="2"/>
+              <Resources head="Information Technology 9626" link="Alevel/IT" size="2"/>
             </div>
           </div>
         </section>
