@@ -30,7 +30,7 @@ export const metadata = {
     siteName: "Nexus Learn",
     images: [
       {
-        url: "/logo.png",
+        url: "/Logo.png",
         width: 253,
         height: 63,
         alt: "Nexus Learn Logo",
