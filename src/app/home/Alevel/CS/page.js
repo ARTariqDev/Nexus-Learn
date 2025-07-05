@@ -7,8 +7,9 @@ import Yearly from '@/components/yearly'
 import Header from '@/components/header'
 import { Monoton } from 'next/font/google'
 import Footer from '@/components/footer'
+import csYearlyData from './CS_Yearly.json'
+import csBooks from './CS_Books.json'
 
-// Load Monoton font
 const monoton = Monoton({
   weight: '400',
   subsets: ['latin'],
@@ -17,8 +18,13 @@ const monoton = Monoton({
 
 export default function HomePage() {
   const [user, setUser] = useState(null)
+  const [year, setYear] = useState('2024')
+  const [session, setSession] = useState('november')
+  const [paperGroup, setPaperGroup] = useState('1')
+
   const [showBooks, setShowBooks] = useState(false)
-  const [showYearlyP1, setShowYearlyP1] = useState(false)
+  const [showPapers, setShowPapers] = useState(false)
+
   const router = useRouter()
 
   useEffect(() => {
@@ -30,19 +36,28 @@ export default function HomePage() {
     }
   }, [])
 
+  const allYears = [...new Set(csYearlyData.map(item => item.id.split('_')[1]))].sort().reverse()
+  const filtered = csYearlyData.filter(item => {
+    const [sess, yr, code] = item.id.split('_')
+    return (
+      sess === session.toLowerCase() &&
+      yr === year &&
+      code.startsWith(paperGroup)
+    )
+  })
+
   return (
     <div className="min-h-screen flex flex-col bg-[#000000] text-white">
       <div className="border-b border-[#1a1a1a] shadow-md">
         <Header />
       </div>
 
-      <div className="flex-1">
-        {/* Books Section */}
-        <section className="p-6 max-w-[95rem] mx-auto bg-[#111111] rounded-xl mt-8">
+      <div className="flex-1 p-6 max-w-[95rem] mx-auto space-y-12">
+
+        {/* Book Section */}
+        <section className="bg-[#111111] rounded-xl p-6 w-[80vw] transition-all duration-500 ease-in-out overflow-hidden">
           <div className="flex items-center justify-between mb-4">
-            <h1 className={`${monoton.className} text-white text-3xl`}>
-              Books
-            </h1>
+            <h1 className={`${monoton.className} text-white text-3xl`}>Books</h1>
             <button
               onClick={() => setShowBooks(!showBooks)}
               className="bg-[#ffaa00] text-black font-semibold px-4 py-2 rounded hover:opacity-90 transition-all"
@@ -52,59 +67,74 @@ export default function HomePage() {
           </div>
 
           <div
-            className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 transition-all duration-500 overflow-hidden ${
-              showBooks ? 'max-h-[500rem] opacity-100' : 'max-h-0 opacity-0'
+            className={`transition-all duration-500 ease-in-out overflow-hidden ${
+              showBooks ? 'max-h-[1000px] opacity-100' : 'max-h-0 opacity-0'
             }`}
           >
-            <div className="fade-in fade-delay-1 mx-auto">
-              <PDF
-                name="Cambridge University Press"
-                text1="View Book"
-                link1="https://drive.google.com/file/d/1LmBS_T53lcIr6ia8s3ivYGAR9dyeMWXe/view?usp=sharing"
-                size="2"
-              />
-            </div>
-            <div className="fade-in fade-delay-1 mx-auto">
-              <PDF
-                name="AS and A Level CS"
-                text1="View Book"
-                link1="https://drive.google.com/file/d/1J3zyYx5svgA0koRyHkaMCsZYLrw8Jtlc/view?usp=drive_link"
-                size="3"
-              />
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-y-12 gap-x-8">
+              {csBooks.map((book, index) => (
+                <PDF key={index} {...book} />
+              ))}
             </div>
           </div>
         </section>
 
-        {/* Yearly - P1 Section */}
-        <section className="p-6 max-w-[95rem] mx-auto bg-[#111111] rounded-xl mt-8">
+        {/* Past Papers Section */}
+        <section className="bg-[#111111] rounded-xl p-6 w-[80vw] transition-all duration-500 ease-in-out overflow-hidden">
           <div className="flex items-center justify-between mb-4">
-            <h1 className={`${monoton.className} text-white text-3xl`}>
-              Yearly - P1
-            </h1>
+            <h1 className={`${monoton.className} text-white text-3xl`}>Yearly Past Papers</h1>
             <button
-              onClick={() => setShowYearlyP1(!showYearlyP1)}
+              onClick={() => setShowPapers(!showPapers)}
               className="bg-[#ffaa00] text-black font-semibold px-4 py-2 rounded hover:opacity-90 transition-all"
             >
-              {showYearlyP1 ? 'Hide' : 'Show'}
+              {showPapers ? 'Hide' : 'Show'}
             </button>
           </div>
 
           <div
-            className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 transition-all duration-500 overflow-hidden ${
-              showYearlyP1 ? 'max-h-[500rem] opacity-100' : 'max-h-0 opacity-0'
+            className={`transition-all duration-500 ease-in-out overflow-hidden ${
+              showPapers ? 'max-h-[1500px] opacity-100' : 'max-h-0 opacity-0'
             }`}
           >
-            <div className="fade-in fade-delay-1 mx-auto">
-              <Yearly
-                name="November 2024 11"
-                size="3"
-                qp="https://drive.google.com/file/d/181-_T78zEhJMvGQ88AN9vJyJzwrNJOw4/view?usp=sharing"
-                ms="https://drive.google.com/file/d/1VUU06c0WILfgxkc9CqKmzoGQHRiE4Lig/view?usp=sharing"
-                text1="View Question Paper"
-                text2="View Mark Scheme"
-                id="november_2024_11"
-              />
+            <div className="flex gap-6 flex-wrap mb-6">
+              <select
+                value={year}
+                onChange={(e) => setYear(e.target.value)}
+                className="bg-[#1a1a1a] text-white px-4 py-2 rounded border border-gray-600"
+              >
+                {allYears.map(y => (
+                  <option key={y} value={y}>{y}</option>
+                ))}
+              </select>
+              <select
+                value={session}
+                onChange={(e) => setSession(e.target.value)}
+                className="bg-[#1a1a1a] text-white px-4 py-2 rounded border border-gray-600"
+              >
+                <option value="may">May/June</option>
+                <option value="november">October/November</option>
+              </select>
+              <select
+                value={paperGroup}
+                onChange={(e) => setPaperGroup(e.target.value)}
+                className="bg-[#1a1a1a] text-white px-4 py-2 rounded border border-gray-600"
+              >
+                <option value="1">Paper 1 (11, 12, 13)</option>
+                <option value="2">Paper 2 (21, 22, 23)</option>
+                <option value="3">Paper 3 (31, 32, 33)</option>
+                <option value="4">Paper 4 (41, 42, 43)</option>
+              </select>
             </div>
+
+            {filtered.length > 0 ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-y-12 gap-x-8">
+                {filtered.map((item, index) => (
+                  <Yearly key={index} {...item} />
+                ))}
+              </div>
+            ) : (
+              <p className="text-gray-400 text-center mt-6">No papers found for this selection.</p>
+            )}
           </div>
         </section>
       </div>

@@ -19,7 +19,7 @@ const sizeMap = {
   '6': 'text-6xl',
 }
 
-const Yearly = ({ name, size, qp, ms, text1, text2, id }) => {
+const Yearly = ({ name, size, qp, ms, sf, text1, text2, text3, id }) => {
   const [username, setUsername] = useState(null)
   const [scored, setScored] = useState('')
   const [total, setTotal] = useState('')
@@ -29,6 +29,11 @@ const Yearly = ({ name, size, qp, ms, text1, text2, id }) => {
   const paper = id
 
   useEffect(() => {
+    // Reset scores when paper ID changes
+    setScored('')
+    setTotal('')
+    setPercentage(null)
+
     const token = localStorage.getItem('token')
     if (token && typeof window !== 'undefined') {
       try {
@@ -119,6 +124,16 @@ const Yearly = ({ name, size, qp, ms, text1, text2, id }) => {
             className="bg-[#ffaa00] text-black font-semibold px-6 py-2 rounded-xl hover:bg-transparent hover:text-[#ffaa00] hover:border-2 hover:border-[#ffaa00] transition-all text-center"
           >
             {text2}
+          </a>
+        )}
+        {sf && text3 && (
+          <a
+            href={sf}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="bg-[#ffaa00] text-black font-semibold px-6 py-2 rounded-xl hover:bg-transparent hover:text-[#ffaa00] hover:border-2 hover:border-[#ffaa00] transition-all text-center"
+          >
+            {text3}
           </a>
         )}
       </div>

@@ -4,10 +4,10 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import PDF from '@/components/pdf'
 import Header from '@/components/header'
-import { Monoton } from 'next/font/google'
 import Footer from '@/components/footer'
+import { Monoton } from 'next/font/google'
+import books from './IT_Books.json' // <-- Import the JSON
 
-// Load Monoton font
 const monoton = Monoton({
   weight: '400',
   subsets: ['latin'],
@@ -16,7 +16,7 @@ const monoton = Monoton({
 
 export default function HomePage() {
   const [user, setUser] = useState(null)
-  const [showBooks, setShowBooks] = useState(false) // Collapsed by default
+  const [showBooks, setShowBooks] = useState(false)
   const router = useRouter()
 
   useEffect(() => {
@@ -53,48 +53,12 @@ export default function HomePage() {
               showBooks ? 'max-h-[500rem] opacity-100' : 'max-h-0 opacity-0'
             }`}
           >
-            <div className="fade-in fade-delay-1 mx-auto">
-              <PDF
-                name="Hodder education AS Book"
-                text1="View Book"
-                link1="https://drive.google.com/file/d/193YWF0mZWwkJxFfah_zGijmP2C_1OZW1/view?usp=sharing"
-                size="3"
-              />
-            </div>
-            <div className="fade-in fade-delay-1 mx-auto">
-              <PDF
-                name="Hodder Education A2"
-                text1="View Book"
-                link1="https://drive.google.com/file/d/1dsX3mZEWh-FEjFWPprpnzNLHgHQdwd1m/view?usp=sharing"
-                size="3"
-              />
-            </div>
-            <div className="fade-in fade-delay-1 mx-auto">
-              <PDF
-                name="A level IT (CUP)"
-                text1="View Book"
-                link1="https://drive.google.com/file/d/1ZbNvRhPeJGb0U9bqlgTAnZgGPrE1iegL/view?usp=sharing"
-                size="3"
-              />
-            </div>
-            <div className="fade-in fade-delay-1 mx-auto">
-              <PDF
-                name="A level IT 2nd Edition (CUP)"
-                text1="View Book"
-                link1="https://drive.google.com/file/d/1vGNc4F7h-7sNof6vzA9xAfk87i8CTU67/view?usp=sharing"
-                size="3"
-              />
-            </div>
-            <div className="fade-in fade-delay-1 mx-auto">
-              <PDF
-                name="IT Workbook (CUP)"
-                text1="View Book"
-                link1="https://drive.google.com/file/d/1kXgLk6XXEJTWGAURGaf7WZZXP9Usm7Ub/view?usp=sharing"
-                size="3"
-              />
-            </div>
+            {books.map((book, idx) => (
+              <div key={idx} className={`fade-in fade-delay-${idx + 1} mx-auto`}>
+                <PDF {...book} />
+              </div>
+            ))}
           </div>
-          
         </section>
       </div>
 
