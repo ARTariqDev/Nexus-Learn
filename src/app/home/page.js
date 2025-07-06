@@ -53,13 +53,13 @@ export default function HomePage() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             <div className="fade-in fade-delay-1 mx-auto">
-              <Resources head="O Levels" link="/home" />
+              <Resources head="O Levels" link="/" />
             </div>
             <div className="fade-in fade-delay-2 mx-auto">
               <Resources head="A Levels" link="Alevel" />
             </div>
             <div className="fade-in fade-delay-3 mx-auto">
-              <Resources head="IGCSE" link="/home" />
+              <Resources head="IGCSE" link="/" />
             </div>
             <div className="fade-in fade-delay-4 mx-auto">
               <Resources head="SAT" link="SAT" />
