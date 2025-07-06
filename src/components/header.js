@@ -46,7 +46,7 @@ const Header = () => {
           <Link href="/home/Stats" className="hover:text-[#ffaa00] hover:underline underline-offset-4 transition-colors">
             Stats
           </Link>
-          <Link href="/tutorials" className="hover:text-[#ffaa00] hover:underline underline-offset-4 transition-colors">
+          <Link href="/home" className="hover:text-[#ffaa00] hover:underline underline-offset-4 transition-colors">
             Tutorials
           </Link>
 

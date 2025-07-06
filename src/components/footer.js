@@ -15,9 +15,9 @@ const Footer = () => {
           © {new Date().getFullYear()} Nexus Learn. All rights reserved.
         </p>
         <div className="flex gap-6 justify-center sm:justify-end">
-          <Link href="/privacy" className="hover:text-[#ffaa00] transition-colors">Privacy</Link>
-          <Link href="/terms" className="hover:text-[#ffaa00] transition-colors">Terms</Link>
-          <Link href="/contact" className="hover:text-[#ffaa00] transition-colors">Contact</Link>
+          <Link href="/" className="hover:text-[#ffaa00] transition-colors">Privacy</Link>
+          <Link href="/" className="hover:text-[#ffaa00] transition-colors">Terms</Link>
+          <Link href="/" className="hover:text-[#ffaa00] transition-colors">Contact</Link>
         </div>
       </div>
     </footer>
