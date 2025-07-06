@@ -34,10 +34,10 @@ const Header = () => {
           <Link href="/home/Alevel" className="hover:text-[#ffaa00] hover:underline underline-offset-4 transition-colors">
             ALevel
           </Link>
-          <Link href="/home/Olevel" className="hover:text-[#ffaa00] hover:underline underline-offset-4 transition-colors">
+          <Link href="/home" className="hover:text-[#ffaa00] hover:underline underline-offset-4 transition-colors">
             OLevel
           </Link>
-          <Link href="/home/IGCSE" className="hover:text-[#ffaa00] hover:underline underline-offset-4 transition-colors">
+          <Link href="/home" className="hover:text-[#ffaa00] hover:underline underline-offset-4 transition-colors">
             IGCSE
           </Link>
           <Link href="/home/SAT" className="hover:text-[#ffaa00] hover:underline underline-offset-4 transition-colors">
