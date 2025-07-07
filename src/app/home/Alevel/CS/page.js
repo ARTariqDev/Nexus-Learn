@@ -55,8 +55,8 @@ export default function HomePage() {
       <div className="flex-1 p-6 max-w-[95rem] mx-auto space-y-12">
 
         {/* Book Section */}
-        <section className="bg-[#111111] rounded-xl p-6 w-[80vw] transition-all duration-500 ease-in-out overflow-hidden">
-          <div className="flex items-center justify-between mb-4">
+        <section className="bg-[#111111] rounded-xl p-6 container w-[87vw] transition-all duration-500 ease-in-out overflow-hidden">
+          <div className="flex items-center justify-between mb-4 mx-auto">
             <h1 className={`${monoton.className} text-white text-3xl`}>Books</h1>
             <button
               onClick={() => setShowBooks(!showBooks)}
@@ -71,7 +71,7 @@ export default function HomePage() {
               showBooks ? 'max-h-[1000px] opacity-100' : 'max-h-0 opacity-0'
             }`}
           >
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-y-12 gap-x-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-y-7 gap-x-4">
               {csBooks.map((book, index) => (
                 <PDF key={index} {...book} />
               ))}
@@ -80,7 +80,7 @@ export default function HomePage() {
         </section>
 
         {/* Past Papers Section */}
-        <section className="bg-[#111111] rounded-xl p-6 w-[80vw] transition-all duration-500 ease-in-out overflow-hidden ">
+        <section className="bg-[#111111] rounded-xl p-6 container w-[87vw] transition-all duration-500 ease-in-out overflow-hidden ">
           <div className="flex items-center justify-between mb-4">
             <h1 className={`${monoton.className} text-white text-3xl`}>Yearly Past Papers</h1>
             <button
@@ -127,7 +127,7 @@ export default function HomePage() {
             </div>
 
             {filtered.length > 0 ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-y-2 gap-x-8">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-y-8 gap-x-8">
                 {filtered.map((item) => (
                   <Yearly key={item.id} {...item} />
                 ))}
