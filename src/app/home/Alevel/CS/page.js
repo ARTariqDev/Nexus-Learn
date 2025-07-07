@@ -80,7 +80,7 @@ export default function HomePage() {
         </section>
 
         {/* Past Papers Section */}
-        <section className="bg-[#111111] rounded-xl p-6 w-[80vw] transition-all duration-500 ease-in-out overflow-hidden">
+        <section className="bg-[#111111] rounded-xl p-6 w-[80vw] transition-all duration-500 ease-in-out overflow-hidden ">
           <div className="flex items-center justify-between mb-4">
             <h1 className={`${monoton.className} text-white text-3xl`}>Yearly Past Papers</h1>
             <button
@@ -127,10 +127,11 @@ export default function HomePage() {
             </div>
 
             {filtered.length > 0 ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-y-12 gap-x-8">
-                {filtered.map((item, index) => (
-                  <Yearly key={index} {...item} />
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-y-2 gap-x-8">
+                {filtered.map((item) => (
+                  <Yearly key={item.id} {...item} />
                 ))}
+
               </div>
             ) : (
               <p className="text-gray-400 text-center mt-6">No papers found for this selection.</p>

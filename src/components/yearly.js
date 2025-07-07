@@ -11,12 +11,12 @@ const monoton = Monoton({
 })
 
 const sizeMap = {
-  '1': 'text-xl',
-  '2': 'text-2xl',
-  '3': 'text-3xl',
-  '4': 'text-4xl',
-  '5': 'text-5xl',
-  '6': 'text-6xl',
+  '1': 'text-base',
+  '2': 'text-lg',
+  '3': 'text-xl',
+  '4': 'text-2xl',
+  '5': 'text-3xl',
+  '6': 'text-4xl',
 }
 
 const Yearly = ({ name, size, qp, ms, sf, text1, text2, text3, id }) => {
@@ -25,52 +25,55 @@ const Yearly = ({ name, size, qp, ms, sf, text1, text2, text3, id }) => {
   const [total, setTotal] = useState('')
   const [percentage, setPercentage] = useState(null)
 
-  const subject = typeof window !== 'undefined' ? window.location.pathname.split('/')[3] || 'unknown' : 'unknown'
+  const subject =
+    typeof window !== 'undefined'
+      ? window.location.pathname.split('/')[3] || 'unknown'
+      : 'unknown'
+
   const paper = id
 
   useEffect(() => {
-    // Reset scores when paper ID changes
-    setScored('')
-    setTotal('')
-    setPercentage(null)
+    if (!paper || !subject) return
 
     const token = localStorage.getItem('token')
-    if (token && typeof window !== 'undefined') {
-      try {
-        const decoded = jwtDecode(token)
-        setUsername(decoded.username)
+    if (!token) return
 
-        // Fetch saved score
-        fetch(`/api/scores?username=${decoded.username}&subject=${subject}&paper=${paper}`)
-          .then(res => res.json())
-          .then(data => {
-            if (data && data.score !== undefined) {
-              setPercentage(data.score)
-              setScored(data.scored || '')
-              setTotal(data.total || '')
-            }
-          })
-          .catch(err => console.error('Fetch error:', err))
-      } catch (err) {
-        console.error('Invalid token:', err)
-      }
+    try {
+      const decoded = jwtDecode(token)
+      setUsername(decoded.username)
+
+      const url = `/api/scores?username=${decoded.username}&subject=${subject}&paper=${paper}`
+      console.log('Fetching score from:', url)
+
+      fetch(url)
+        .then((res) => res.json())
+        .then((data) => {
+          console.log('Fetched score data:', data)
+          if (data && data.score !== undefined) {
+            setScored(data.scored?.toString() || '')
+            setTotal(data.total?.toString() || '')
+            setPercentage(data.score)
+          } else {
+            setScored('')
+            setTotal('')
+            setPercentage(null)
+            console.warn('No score found for this variant.')
+          }
+        })
+        .catch((err) => console.error('Fetch error:', err))
+    } catch (err) {
+      console.error('Token decode error:', err)
     }
-  }, [subject, paper])
+  }, [paper, subject])
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-
-    if (!username) {
-      alert('You must be logged in to submit a score.')
-      return
-    }
+    if (!username) return alert('You must be logged in to submit a score.')
 
     const scoredInput = parseFloat(scored)
     const totalInput = parseFloat(total)
-
     if (isNaN(scoredInput) || isNaN(totalInput) || totalInput === 0) {
-      alert('Please enter valid marks.')
-      return
+      return alert('Please enter valid marks.')
     }
 
     const percent = (scoredInput / totalInput) * 100
@@ -92,6 +95,8 @@ const Yearly = ({ name, size, qp, ms, sf, text1, text2, text3, id }) => {
     const data = await res.json()
     if (res.ok) {
       setPercentage(percent)
+      setScored(scoredInput.toString())
+      setTotal(totalInput.toString())
       alert(`Score saved! You got ${percent.toFixed(2)}%`)
     } else {
       alert(data.error || 'Error saving score')
@@ -99,21 +104,35 @@ const Yearly = ({ name, size, qp, ms, sf, text1, text2, text3, id }) => {
   }
 
   return (
-    <div className="relative group bg-[#111111] border-2 border-[#6c6c6c] rounded-2xl p-6 shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300 flex flex-col justify-between w-[20rem] transform">
-      <h2 className={`${monoton.className} ${sizeMap[size] || 'text-2xl'} text-[#ffaa00] text-center mb-4 break-words leading-snug mt-4`}>
+    <div className="relative group bg-[#111111] border-2 border-[#6c6c6c] rounded-xl p-4 shadow-md hover:shadow-lg hover:scale-[1.03] transition-all duration-300 flex flex-col justify-between w-[16rem] h-auto">
+      {/* Title */}
+      <h2
+        className={`${monoton.className} ${
+          sizeMap[size] || 'text-xl'
+        } text-[#ffaa00] text-center mb-2 break-words leading-tight`}
+      >
         {name}
       </h2>
 
-      {/* PDF Links */}
-      <div className="flex flex-col gap-2 mb-4">
+      {/* Score Display */}
+      {scored !== '' && total !== '' && percentage !== null && (
+        <div className="mb-1 text-center text-xs text-gray-300">
+          <p>
+            <strong>{scored}</strong> / {total} → {percentage.toFixed(2)}%
+          </p>
+        </div>
+      )}
+
+      {/* QP / MS / SF Buttons */}
+      <div className="grid grid-cols-2 gap-1 mb-1">
         {qp && text1 && (
           <a
             href={qp}
             target="_blank"
             rel="noopener noreferrer"
-            className="bg-[#ffaa00] text-black font-semibold px-6 py-2 rounded-xl hover:bg-transparent hover:text-[#ffaa00] hover:border-2 hover:border-[#ffaa00] transition-all text-center"
+            className="bg-[#ffaa00] text-black font-semibold px-3 py-1.5 rounded text-xs text-center hover:bg-transparent hover:text-[#ffaa00] hover:border hover:border-[#ffaa00] transition"
           >
-            {text1}
+            {text1 === 'View Question Paper' ? 'QP' : text1}
           </a>
         )}
         {ms && text2 && (
@@ -121,9 +140,9 @@ const Yearly = ({ name, size, qp, ms, sf, text1, text2, text3, id }) => {
             href={ms}
             target="_blank"
             rel="noopener noreferrer"
-            className="bg-[#ffaa00] text-black font-semibold px-6 py-2 rounded-xl hover:bg-transparent hover:text-[#ffaa00] hover:border-2 hover:border-[#ffaa00] transition-all text-center"
+            className="bg-[#ffaa00] text-black font-semibold px-3 py-1.5 rounded text-xs text-center hover:bg-transparent hover:text-[#ffaa00] hover:border hover:border-[#ffaa00] transition"
           >
-            {text2}
+            {text2 === 'View Mark Scheme' ? 'MS' : text2}
           </a>
         )}
         {sf && text3 && (
@@ -131,48 +150,40 @@ const Yearly = ({ name, size, qp, ms, sf, text1, text2, text3, id }) => {
             href={sf}
             target="_blank"
             rel="noopener noreferrer"
-            className="bg-[#ffaa00] text-black font-semibold px-6 py-2 rounded-xl hover:bg-transparent hover:text-[#ffaa00] hover:border-2 hover:border-[#ffaa00] transition-all text-center"
+            className="bg-[#ffaa00] text-black font-semibold px-3 py-1.5 rounded text-xs text-center hover:bg-transparent hover:text-[#ffaa00] hover:border hover:border-[#ffaa00] transition col-span-2"
           >
-            {text3}
+            {text3 === 'View Source Files' ? 'SF' : text3}
           </a>
         )}
       </div>
 
-      {/* Display stored score */}
-      {percentage !== null && (
-        <div className="mb-4 text-center text-sm text-gray-300">
-          <p><strong>Scored:</strong> {scored} / {total}</p>
-          <p><strong>Percentage:</strong> {percentage.toFixed(2)}%</p>
+      {/* Score Inputs and Submit */}
+      <form onSubmit={handleSubmit} className="space-y-1 mt-auto">
+        <div className="grid grid-cols-2 gap-1">
+          <input
+            type="number"
+            step="any"
+            value={scored}
+            onChange={(e) => setScored(e.target.value)}
+            placeholder="Scored"
+            className="px-2 py-1 rounded bg-[#1a1a1a] text-white text-xs border border-[#444] focus:outline-none focus:ring-1 focus:ring-[#ffaa00]"
+            required
+          />
+          <input
+            type="number"
+            step="any"
+            value={total}
+            onChange={(e) => setTotal(e.target.value)}
+            placeholder="Total"
+            className="px-2 py-1 rounded bg-[#1a1a1a] text-white text-xs border border-[#444] focus:outline-none focus:ring-1 focus:ring-[#ffaa00]"
+            required
+          />
         </div>
-      )}
-
-      {/* Form */}
-      <form onSubmit={handleSubmit} className="space-y-2">
-        <input
-          name="scored"
-          type="number"
-          step="any"
-          value={scored}
-          onChange={(e) => setScored(e.target.value)}
-          placeholder="Marks Scored"
-          className="px-3 py-2 rounded w-full bg-[#1a1a1a] text-white placeholder-gray-400 border border-[#444] focus:outline-none focus:ring-2 focus:ring-[#ffaa00]"
-          required
-        />
-        <input
-          name="total"
-          type="number"
-          step="any"
-          value={total}
-          onChange={(e) => setTotal(e.target.value)}
-          placeholder="Total Marks"
-          className="px-3 py-2 rounded w-full bg-[#1a1a1a] text-white placeholder-gray-400 border border-[#444] focus:outline-none focus:ring-2 focus:ring-[#ffaa00]"
-          required
-        />
         <button
           type="submit"
-          className="bg-[#ffaa00] text-black font-bold px-4 py-2 rounded w-full hover:opacity-90 transition-all"
+          className="w-full bg-[#ffaa00] text-black text-xs font-bold py-1.5 rounded hover:opacity-90 transition"
         >
-          Submit Score
+          Save Score
         </button>
       </form>
     </div>
