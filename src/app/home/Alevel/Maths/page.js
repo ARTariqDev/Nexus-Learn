@@ -30,21 +30,32 @@ export default function HomePage() {
     }
   }, [])
 
+  const toggleTopicals = () => {
+    setShowTopicals((prev) => !prev)
+    setShowP3Topicals(false)
+  }
+
+  const toggleP3Topicals = () => {
+    setShowP3Topicals((prev) => !prev)
+    setShowTopicals(false)
+  }
+
   return (
-    <div className="min-h-screen flex flex-col bg-[#000000] text-white">
+    <div className="min-h-screen flex flex-col bg-black text-white">
       <div className="border-b border-[#1a1a1a] shadow-md">
         <Header />
       </div>
 
       <div className="flex-1">
+
         {/* Topicals P1 Section */}
-        <section className="p-6 max-w-[95rem] mx-auto bg-[#111111] rounded-xl mt-8 fade-in">
+        <section className="container p-6 mx-auto bg-[#111111] rounded-xl mt-8 fade-in">
           <div className="flex items-center justify-between mb-4">
             <h1 className={`${monoton.className} text-white text-3xl`}>
               Topicals P1
             </h1>
             <button
-              onClick={() => setShowTopicals(!showTopicals)}
+              onClick={toggleTopicals}
               className="bg-[#ffaa00] text-black font-semibold px-4 py-2 rounded hover:opacity-90 transition-all"
             >
               {showTopicals ? 'Hide' : 'Show'}
@@ -65,13 +76,13 @@ export default function HomePage() {
         </section>
 
         {/* Topicals P3 Section */}
-        <section className="p-6 max-w-[95rem] mx-auto bg-[#111111] rounded-xl mt-8 fade-in">
-          <div className="flex items-center justify-between mb-4 fade-in">
+        <section className="container p-6 mx-auto bg-[#111111] rounded-xl mt-8 fade-in">
+          <div className="flex items-center justify-between mb-4">
             <h1 className={`${monoton.className} text-white text-3xl`}>
               Topicals P3
             </h1>
             <button
-              onClick={() => setShowP3Topicals(!showP3Topicals)}
+              onClick={toggleP3Topicals}
               className="bg-[#ffaa00] text-black font-semibold px-4 py-2 rounded hover:opacity-90 transition-all"
             >
               {showP3Topicals ? 'Hide' : 'Show'}

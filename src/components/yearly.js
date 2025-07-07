@@ -43,12 +43,9 @@ const Yearly = ({ name, size, qp, ms, sf, text1, text2, text3, id }) => {
       setUsername(decoded.username)
 
       const url = `/api/scores?username=${decoded.username}&subject=${subject}&paper=${paper}`
-      console.log('Fetching score from:', url)
-
       fetch(url)
         .then((res) => res.json())
         .then((data) => {
-          console.log('Fetched score data:', data)
           if (data && data.score !== undefined) {
             setScored(data.scored?.toString() || '')
             setTotal(data.total?.toString() || '')
@@ -57,7 +54,6 @@ const Yearly = ({ name, size, qp, ms, sf, text1, text2, text3, id }) => {
             setScored('')
             setTotal('')
             setPercentage(null)
-            console.warn('No score found for this variant.')
           }
         })
         .catch((err) => console.error('Fetch error:', err))
@@ -104,7 +100,7 @@ const Yearly = ({ name, size, qp, ms, sf, text1, text2, text3, id }) => {
   }
 
   return (
-    <div className="relative group bg-[#111111] border-2 border-[#6c6c6c] rounded-xl p-4 shadow-md hover:shadow-lg hover:scale-[1.03] transition-all duration-300 flex flex-col justify-between w-[16rem] h-auto">
+    <div className="container max-w-[22rem] w-full bg-[#111111] border-2 border-[#6c6c6c] rounded-xl p-4 shadow-md hover:shadow-lg hover:scale-[1.03] transition-all duration-300 flex flex-col justify-between h-auto">
       {/* Title */}
       <h2
         className={`${monoton.className} ${

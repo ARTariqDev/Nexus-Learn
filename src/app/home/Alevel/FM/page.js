@@ -168,7 +168,7 @@ export default function FurtherMathsPage() {
             </div>
 
             {filtered.length > 0 ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-y-12 gap-x-4 ml-8">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-y-12 gap-x-1 ml-4">
                 {filtered.map((item, index) => (
                   <Yearly key={index} {...item} />
                 ))}

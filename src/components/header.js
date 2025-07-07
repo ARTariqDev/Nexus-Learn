@@ -1,7 +1,7 @@
- 'use client'
+'use client'
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { Monoton } from "next/font/google";
 
 const monoton = Monoton({
@@ -12,11 +12,14 @@ const monoton = Monoton({
 
 const Header = () => {
   const router = useRouter();
+  const pathname = usePathname();
 
   const handleLogout = () => {
-    localStorage.removeItem('token'); // clear auth token
-    router.push('/'); // redirect to landing page
+    localStorage.removeItem('token');
+    router.push('/');
   };
+
+  const isAuthPage = pathname === '/login' || pathname === '/signup';
 
   return (
     <header className={`${monoton.className} bg-[#121212] text-white px-6 py-4 shadow-md`}>
@@ -26,37 +29,48 @@ const Header = () => {
           <Link href="/home">Nexus Learn</Link>
         </div>
 
-        {/* Navigation */}
+        {/* Conditional Navigation */}
         <nav className="flex flex-wrap justify-center gap-3 sm:gap-6 text-sm sm:text-base text-center">
-          <Link href="/home" className="hover:text-[#ffaa00] hover:underline underline-offset-4 transition-colors">
-            Home
-          </Link>
-          <Link href="/home/Alevel" className="hover:text-[#ffaa00] hover:underline underline-offset-4 transition-colors">
-            ALevel
-          </Link>
-          <Link href="/home" className="hover:text-[#ffaa00] hover:underline underline-offset-4 transition-colors">
-            OLevel
-          </Link>
-          <Link href="/home" className="hover:text-[#ffaa00] hover:underline underline-offset-4 transition-colors">
-            IGCSE
-          </Link>
-          <Link href="/home/SAT" className="hover:text-[#ffaa00] hover:underline underline-offset-4 transition-colors">
-            SAT
-          </Link>
-          <Link href="/home/Stats" className="hover:text-[#ffaa00] hover:underline underline-offset-4 transition-colors">
-            Stats
-          </Link>
-          <Link href="/home" className="hover:text-[#ffaa00] hover:underline underline-offset-4 transition-colors">
-            Tutorials
-          </Link>
-
-          {/* Logout */}
-          <button
-            onClick={handleLogout}
-            className="hover:text-[#ec6262] hover:underline underline-offset-4 transition-colors"
-          >
-            Log-Out
-          </button>
+          {isAuthPage ? (
+            <>
+              <Link href="/login" className="hover:text-[#ffaa00] hover:underline underline-offset-4 transition-colors">
+                Login
+              </Link>
+              <Link href="/signup" className="hover:text-[#ffaa00] hover:underline underline-offset-4 transition-colors">
+                Signup
+              </Link>
+            </>
+          ) : (
+            <>
+              <Link href="/home" className="hover:text-[#ffaa00] hover:underline underline-offset-4 transition-colors">
+                Home
+              </Link>
+              <Link href="/home/Alevel" className="hover:text-[#ffaa00] hover:underline underline-offset-4 transition-colors">
+                ALevel
+              </Link>
+              <Link href="/home" className="hover:text-[#ffaa00] hover:underline underline-offset-4 transition-colors">
+                OLevel
+              </Link>
+              <Link href="/home" className="hover:text-[#ffaa00] hover:underline underline-offset-4 transition-colors">
+                IGCSE
+              </Link>
+              <Link href="/home/SAT" className="hover:text-[#ffaa00] hover:underline underline-offset-4 transition-colors">
+                SAT
+              </Link>
+              <Link href="/home/Stats" className="hover:text-[#ffaa00] hover:underline underline-offset-4 transition-colors">
+                Stats
+              </Link>
+              <Link href="/home" className="hover:text-[#ffaa00] hover:underline underline-offset-4 transition-colors">
+                Tutorials
+              </Link>
+              <button
+                onClick={handleLogout}
+                className="hover:text-[#ec6262] hover:underline underline-offset-4 transition-colors"
+              >
+                Log-Out
+              </button>
+            </>
+          )}
         </nav>
       </div>
     </header>

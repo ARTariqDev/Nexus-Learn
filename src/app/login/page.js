@@ -2,6 +2,8 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import Header from '@/components/header'
+import Footer from '@/components/footer'
 
 export default function LoginPage() {
   const [username, setUsername] = useState('')
@@ -34,44 +36,56 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#111111]">
-      <form
-        onSubmit={handleLogin}
-        className="bg-[#121212] p-8 rounded-lg shadow-md w-full max-w-md"
-      >
-        <h2 className="text-2xl font-bold mb-6 text-center text-white">Login</h2>
+    <div className="min-h-screen flex flex-col bg-black">
+      <Header />
 
-        {error && <p className="text-red-500 mb-4">{error}</p>}
-
-        <input
-          type="text"
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          className="w-full p-3 bg-[#111111] border border-gray-700 text-white rounded mb-4"
-          required
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className="w-full p-3 bg-[#111111] border border-gray-700 text-white rounded mb-6"
-          required
-        />
-        <button
-          type="submit"
-          className="w-full bg-[#ffaa00] text-black font-semibold py-3 rounded hover:opacity-90"
-          disabled={loading}
+      <main className="flex-grow flex items-center justify-center px-4 py-12">
+        <form
+          onSubmit={handleLogin}
+          className="bg-[#121212] p-8 rounded-lg shadow-md w-full max-w-md"
         >
-          {loading ? 'Logging in...' : 'Login'}
-        </button>
-        {error && <Link href="/signup">
-          <button className="w-full bg-[#ffaa00] text-black font-semibold py-3 rounded hover:opacity-90 mt-2">
-            Signup
+          <h2 className="text-2xl font-bold mb-6 text-center text-white">Login</h2>
+
+          {error && <p className="text-red-500 mb-4">{error}</p>}
+
+          <input
+            type="text"
+            placeholder="Username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            className="w-full p-3 bg-[#111111] border border-gray-700 text-white rounded mb-4"
+            required
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="w-full p-3 bg-[#111111] border border-gray-700 text-white rounded mb-6"
+            required
+          />
+
+          <button
+            type="submit"
+            className="w-full bg-[#ffaa00] text-black font-semibold py-3 rounded hover:opacity-90 transition-all"
+            disabled={loading}
+          >
+            {loading ? 'Logging in...' : 'Login'}
           </button>
-        </Link>}
-      </form>
+
+          {error && (
+            <div className="mt-3">
+              <Link href="/signup">
+                <button className="w-full bg-[#ffaa00] text-black font-semibold py-3 rounded hover:opacity-90 transition-all">
+                  Signup
+                </button>
+              </Link>
+            </div>
+          )}
+        </form>
+      </main>
+
+      <Footer />
     </div>
   )
 }
