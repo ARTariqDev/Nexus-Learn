@@ -26,7 +26,7 @@ export default function FurtherMathsPage() {
   const [showPapers, setShowPapers] = useState(false)
 
   const [year, setYear] = useState('2024')
-  const [session, setSession] = useState('november')
+  const [session, setSession] = useState('november') // or 'june'
   const [paperGroup, setPaperGroup] = useState('1')
 
   const router = useRouter()
@@ -152,7 +152,7 @@ export default function FurtherMathsPage() {
                 onChange={(e) => setSession(e.target.value)}
                 className="bg-[#1a1a1a] text-white px-4 py-2 rounded border border-gray-600"
               >
-                <option value="may">May/June</option>
+                <option value="june">May/June</option>
                 <option value="november">October/November</option>
               </select>
               <select
