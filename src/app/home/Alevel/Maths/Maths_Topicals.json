@@ -178,5 +178,23 @@
       "link2": "https://drive.google.com/file/d/1dcgrqNbICWYh_uK3oD9VQ95ykwgY9atb/view?usp=sharing",
       "size": "3"
     }
+  ],
+  "S1" : [
+    {
+      "name": "Data Representation",
+      "text1": "Question paper",
+      "text2": "Mark Scheme",
+      "link1": "https://drive.google.com/file/d/1_CzQEYWde5fR4rDjacKvtyNSWXphq8FJ/view?usp=drive_link",
+      "link2": "https://drive.google.com/file/d/164LuRL6-Zza8vO0iFhk4PI8KZxGKPbjd/view?usp=drive_link",
+      "size": "2"
+    },
+    {
+      "name": "Probability",
+      "text1": "Question paper",
+      "text2": "Mark Scheme",
+      "link1": "https://drive.google.com/file/d/1_CzQEYWde5fR4rDjacKvtyNSWXphq8FJ/view?usp=drive_link",
+      "link2": "https://drive.google.com/file/d/164LuRL6-Zza8vO0iFhk4PI8KZxGKPbjd/view?usp=drive_link",
+      "size": "3"
+    }
   ]
 }

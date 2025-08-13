@@ -5,17 +5,22 @@ import User from "@/models/User";
 
 export async function POST(req) {
   try {
-    const { username, password } = await req.json();
+    const { identifier, password } = await req.json();
 
-    if (!username || !password) {
-      return new Response(JSON.stringify({ error: "Username and password required" }), {
-        status: 400,
-      });
+    if (!identifier || !password) {
+      return new Response(
+        JSON.stringify({ error: "Username/Email and password required" }),
+        { status: 400 }
+      );
     }
 
     await connectToDB();
 
-    const user = await User.findOne({ username });
+    // Find user by username OR email
+    const user = await User.findOne({
+      $or: [{ username: identifier }, { email: identifier }],
+    });
+
     if (!user) {
       return new Response(JSON.stringify({ error: "Invalid credentials" }), {
         status: 401,
@@ -30,7 +35,7 @@ export async function POST(req) {
     }
 
     const token = jwt.sign(
-      { userId: user._id, username: user.username },
+      { userId: user._id, username: user.username, email: user.email },
       process.env.JWT_SECRET,
       { expiresIn: "7d" }
     );
@@ -45,5 +50,4 @@ export async function POST(req) {
       status: 500,
     });
   }
-  localStorage.setItem('token', token);
 }

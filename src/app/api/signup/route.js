@@ -4,30 +4,43 @@ import User from "@/models/User";
 
 export async function POST(req) {
   try {
-    const { username, password } = await req.json();
+    const { username, email, password } = await req.json();
 
-    if (!username || !password) {
-      return new Response(JSON.stringify({ error: "Username and password required" }), {
-        status: 400,
-      });
+    if (!username || !email || !password) {
+      return new Response(
+        JSON.stringify({ error: "Username, email, and password are required" }),
+        { status: 400 }
+      );
     }
 
     await connectToDB();
 
-    const existingUser = await User.findOne({ username });
+    // Check if username or email already exists
+    const existingUser = await User.findOne({
+      $or: [{ username }, { email }]
+    });
     if (existingUser) {
-      return new Response(JSON.stringify({ error: "User already exists" }), {
-        status: 409,
-      });
+      return new Response(
+        JSON.stringify({ error: "Username or email already in use" }),
+        { status: 409 }
+      );
     }
 
     const hashedPassword = await hash(password, 10);
-    const newUser = new User({ username, password: hashedPassword });
+
+    const newUser = new User({
+      username,
+      email,
+      password: hashedPassword
+    });
+
     await newUser.save();
 
-    return new Response(JSON.stringify({ message: "User registered successfully" }), {
-      status: 201,
-    });
+    return new Response(
+      JSON.stringify({ message: "User registered successfully" }),
+      { status: 201 }
+    );
+
   } catch (error) {
     console.error("Signup Error:", error);
     return new Response(JSON.stringify({ error: "Server error" }), {

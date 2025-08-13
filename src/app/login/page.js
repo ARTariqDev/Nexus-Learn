@@ -6,7 +6,7 @@ import Header from '@/components/header'
 import Footer from '@/components/footer'
 
 export default function LoginPage() {
-  const [username, setUsername] = useState('')
+  const [identifier, setIdentifier] = useState('') // can be username or email
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
@@ -20,7 +20,7 @@ export default function LoginPage() {
     const res = await fetch('/api/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, password }),
+      body: JSON.stringify({ identifier, password }), // pass identifier instead of username
     })
 
     const data = await res.json()
@@ -50,9 +50,9 @@ export default function LoginPage() {
 
           <input
             type="text"
-            placeholder="Username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            placeholder="Username or Email"
+            value={identifier}
+            onChange={(e) => setIdentifier(e.target.value)}
             className="w-full p-3 bg-[#111111] border border-gray-700 text-white rounded mb-4"
             required
           />

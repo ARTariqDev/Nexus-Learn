@@ -7,6 +7,7 @@ import Footer from '@/components/footer'
 
 export default function SignupPage() {
   const [username, setUsername] = useState('')
+  const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
@@ -20,7 +21,7 @@ export default function SignupPage() {
     const res = await fetch('/api/signup', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, password }),
+      body: JSON.stringify({ username, email, password }),
     })
 
     if (res.ok) {
@@ -54,6 +55,16 @@ export default function SignupPage() {
             className="w-full p-3 bg-[#111111] border border-gray-700 text-white rounded mb-4"
             required
           />
+
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="w-full p-3 bg-[#111111] border border-gray-700 text-white rounded mb-4"
+            required
+          />
+
           <input
             type="password"
             placeholder="Password"
@@ -62,6 +73,7 @@ export default function SignupPage() {
             className="w-full p-3 bg-[#111111] border border-gray-700 text-white rounded mb-6"
             required
           />
+
           <button
             type="submit"
             className="w-full bg-[#ffaa00] text-black font-semibold py-3 rounded hover:opacity-90 transition-all"
