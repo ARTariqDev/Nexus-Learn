@@ -34,15 +34,8 @@ export const metadata = {
     "SAT prep",
     "IGCSE resources",
     "past papers",
-    "exam preparation",
-    "online learning",
-    "academic progress tracking",
-    "Cambridge exams",
-    "standardized test prep",
-    "A Level Physics",
-    "A Level Maths",
-    "A Level Computer Science",
-    "Further Mathematics"
+    "nexus learn",
+    "Nexus-Learn"
   ],
   authors: [{ name: "Nexus Learn" }],
   creator: "Nexus Learn",
