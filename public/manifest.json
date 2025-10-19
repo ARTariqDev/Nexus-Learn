@@ -1,0 +1,20 @@
+{
+  "name": "Nexus Learn - O Level, A Level & SAT Preparation",
+  "short_name": "Nexus Learn",
+  "description": "Master O Levels, IGCSE, A Levels, and SAT with comprehensive resources and progress tracking",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#111111",
+  "theme_color": "#ffaa00",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "any",
+      "type": "image/x-icon"
+    }
+  ],
+  "categories": ["education", "productivity"],
+  "lang": "en-US",
+  "dir": "ltr"
+}

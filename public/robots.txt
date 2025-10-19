@@ -1,0 +1,11 @@
+# Allow all crawlers
+User-agent: *
+Allow: /
+
+# Disallow admin and API routes
+Disallow: /api/
+Disallow: /login
+Disallow: /signup
+
+# Sitemap location
+Sitemap: https://www.nexuslearn.app/sitemap.xml
