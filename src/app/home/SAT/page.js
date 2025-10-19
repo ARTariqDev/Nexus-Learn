@@ -141,14 +141,23 @@ export default function HomePage() {
           <h1 className={`${monoton.className} text-4xl md:text-5xl text-white mb-2`}>
             SAT Preparation
           </h1>
-          {loading && (
-            <p className="text-gray-500 text-sm mt-2">Loading resources...</p>
-          )}
         </div>
 
-        {renderSection('SAT - English', showBooks, () => setShowBooks(!showBooks), 'english')}
-        {renderSection('SAT - Maths', showMath, () => setShowMath(!showMath), 'maths')}
-        {renderSection('SAT - Combined Resources', showCombined, () => setShowCombined(!showCombined), 'combined')}
+        {loading ? (
+          <div className="flex flex-col items-center justify-center min-h-[400px] space-y-4">
+            <div className="relative w-16 h-16">
+              <div className="absolute top-0 left-0 w-full h-full border-4 border-[#1a1a1a] rounded-full"></div>
+              <div className="absolute top-0 left-0 w-full h-full border-4 border-[#ffaa00] rounded-full border-t-transparent animate-spin"></div>
+            </div>
+            <p className="text-gray-400 text-lg">Loading resources...</p>
+          </div>
+        ) : (
+          <>
+            {renderSection('SAT - English', showBooks, () => setShowBooks(!showBooks), 'english')}
+            {renderSection('SAT - Maths', showMath, () => setShowMath(!showMath), 'maths')}
+            {renderSection('SAT - Combined Resources', showCombined, () => setShowCombined(!showCombined), 'combined')}
+          </>
+        )}
       </div>
 
       <Footer />

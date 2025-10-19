@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import Header from '@/components/header'
 import Footer from '@/components/footer'
 import ExpandableSection from '@/components/ExpandableSection'
@@ -16,18 +16,39 @@ export default function DynamicSubjectPage({ config, dataFiles }) {
   const [filters, setFilters] = useState({})
   const [filteredData, setFilteredData] = useState({})
   const [dbResources, setDbResources] = useState([])
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(false) // Start as false since we load from localStorage first
 
   // Cache key for localStorage
-  const getCacheKey = (type, subject) => {
-    return `nexus_resources_${type}_${subject || 'all'}`
-  }
+  const getCacheKey = useCallback((type, subject) => {
+    return `nexus_db_resources_${type}_${subject || 'all'}`
+  }, [])
 
-  // Check if cache is still valid (24 hours)
-  const isCacheValid = (timestamp) => {
-    const CACHE_DURATION = 24 * 60 * 60 * 1000 // 24 hours in milliseconds
-    return Date.now() - timestamp < CACHE_DURATION
-  }
+  // Get stored resources from localStorage
+  const getStoredResources = useCallback((type, subject) => {
+    if (typeof window === 'undefined') return []
+    try {
+      const key = getCacheKey(type, subject)
+      const stored = localStorage.getItem(key)
+      if (stored) {
+        const parsed = JSON.parse(stored)
+        return Array.isArray(parsed) ? parsed : []
+      }
+    } catch (e) {
+      console.error('Error reading localStorage:', e)
+    }
+    return []
+  }, [getCacheKey])
+
+  // Save resources to localStorage
+  const saveStoredResources = useCallback((type, subject, resources) => {
+    if (typeof window === 'undefined') return
+    try {
+      const key = getCacheKey(type, subject)
+      localStorage.setItem(key, JSON.stringify(resources))
+    } catch (e) {
+      console.error('Error saving to localStorage:', e)
+    }
+  }, [getCacheKey])
 
   // Fetch resources from database
   useEffect(() => {
@@ -42,66 +63,44 @@ export default function DynamicSubjectPage({ config, dataFiles }) {
                        config.subject?.split('  ')[0] || 
                        config.subject
 
+        // STEP 1: Load from localStorage immediately
+        const storedResources = getStoredResources(type, subject?.toLowerCase().trim())
+        setDbResources(storedResources)
+
+        // STEP 2: Fetch from database in background
         const params = new URLSearchParams({ type })
         // For SAT, don't filter by subject since it uses dataKey for differentiation
         if (subject && type !== 'sat') {
           params.append('subject', subject.toLowerCase().trim())
         }
 
-        const cacheKey = getCacheKey(type, subject?.toLowerCase().trim())
-        
-        // Try to get cached data
-        if (typeof window !== 'undefined') {
-          const cached = localStorage.getItem(cacheKey)
-          if (cached) {
-            try {
-              const { data, timestamp } = JSON.parse(cached)
-              if (isCacheValid(timestamp)) {
-                console.log('✅ Using cached resources for', cacheKey)
-                setDbResources(data || [])
-                setLoading(false)
-                return
-              } else {
-                console.log('⏰ Cache expired for', cacheKey)
-              }
-            } catch (e) {
-              console.error('Error parsing cache:', e)
-            }
-          }
-        }
-
-        console.log('🔄 Fetching fresh DB resources:', `/api/resources?${params.toString()}`)
         const response = await fetch(`/api/resources?${params.toString()}`)
         
         if (response.ok) {
           const data = await response.json()
-          console.log('✅ Fetched DB resources:', data.data)
-          setDbResources(data.data || [])
+          const freshResources = data.data || []
           
-          // Cache the results
-          if (typeof window !== 'undefined') {
-            try {
-              localStorage.setItem(cacheKey, JSON.stringify({
-                data: data.data,
-                timestamp: Date.now()
-              }))
-              console.log('💾 Cached resources for', cacheKey)
-            } catch (e) {
-              console.error('Error caching data:', e)
-            }
+          // STEP 3: Merge - only add resources that aren't already in localStorage
+          const storedIds = new Set(storedResources.map(r => r._id || r.id))
+          const newResources = freshResources.filter(r => !storedIds.has(r._id || r.id))
+          
+          if (newResources.length > 0) {
+            const combined = [...storedResources, ...newResources]
+            
+            // STEP 4: Update state and localStorage
+            setDbResources(combined)
+            saveStoredResources(type, subject?.toLowerCase().trim(), combined)
           }
         } else {
           console.error('Failed to fetch DB resources:', response.status)
         }
       } catch (error) {
         console.error('Error fetching DB resources:', error)
-      } finally {
-        setLoading(false)
       }
     }
 
     fetchDbResources()
-  }, [config])
+  }, [config, getStoredResources, saveStoredResources])
 
   // Initialize filters from config
   useEffect(() => {
@@ -181,31 +180,9 @@ export default function DynamicSubjectPage({ config, dataFiles }) {
             code?.startsWith(sectionFilters.paperGroup)
           )
           
-          // Only log 2025 papers for debugging
-          if (yr === '2025') {
-            console.log('🔍 2025 PAPER FILTER:', {
-              item: item.name,
-              id: item.id,
-              parsed: { sess, yr, code },
-              filters: {
-                session: sectionFilters.session,
-                sessionLower: sectionFilters.session.toLowerCase(),
-                year: sectionFilters.year,
-                paperGroup: sectionFilters.paperGroup
-              },
-              checks: {
-                sessionMatch: sess === sectionFilters.session.toLowerCase(),
-                yearMatch: yr === sectionFilters.year,
-                codeMatch: code?.startsWith(sectionFilters.paperGroup)
-              },
-              MATCHES: matches
-            })
-          }
-          
           return matches
         })
         
-        console.log('Filtered results:', filtered.length, 'out of', combinedData.length)
         newFilteredData[section.id] = filtered
       } else {
         newFilteredData[section.id] = combinedData
@@ -241,14 +218,6 @@ export default function DynamicSubjectPage({ config, dataFiles }) {
       return sectionMatch && resource.year
     })
 
-    console.log('Year Filter Generation:', {
-      section: section.id,
-      jsonCount: sectionData.length,
-      dbCount: dbSectionData.length,
-      dbResourcesTotal: dbResources.length,
-      dbYears: dbSectionData.map(r => r.year)
-    })
-
     const combinedData = [...sectionData, ...dbSectionData]
     if (combinedData.length === 0) return null
 
@@ -257,8 +226,6 @@ export default function DynamicSubjectPage({ config, dataFiles }) {
       if (item.id) return item.id.split('_')[1]
       return null
     }).filter(Boolean))].sort((a, b) => b - a) // Sort numerically in descending order
-
-    console.log('Generated years:', allYears)
 
     return {
       years: allYears,

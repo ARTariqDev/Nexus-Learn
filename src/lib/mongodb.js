@@ -26,13 +26,24 @@ async function dbConnect() {
     const opts = {
       bufferCommands: false,
       maxPoolSize: 10, // Free tier limit
-      serverSelectionTimeoutMS: 5000,
+      serverSelectionTimeoutMS: 10000, // Increased from 5s to 10s
       socketTimeoutMS: 45000,
+      family: 4, // Use IPv4, skip trying IPv6
     }
 
     cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => {
       console.log('✅ MongoDB connected')
       return mongoose
+    }).catch((error) => {
+      // Only log connection errors once, not repeatedly
+      if (!global.mongoErrorLogged) {
+        console.error('❌ MongoDB connection error:', error.message)
+        global.mongoErrorLogged = true
+        // Reset flag after 1 minute to allow occasional logging
+        setTimeout(() => { global.mongoErrorLogged = false }, 60000)
+      }
+      cached.promise = null
+      throw error
     })
   }
 
@@ -40,6 +51,7 @@ async function dbConnect() {
     cached.conn = await cached.promise
   } catch (e) {
     cached.promise = null
+    // Don't log here, already logged above
     throw e
   }
 

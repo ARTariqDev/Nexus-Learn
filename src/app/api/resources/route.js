@@ -43,14 +43,15 @@ export async function GET(request) {
     });
     
   } catch (error) {
-    console.error('Error fetching resources:', error);
-    return NextResponse.json(
-      { 
-        success: false, 
-        error: 'Failed to fetch resources',
-        message: error.message 
-      },
-      { status: 500 }
-    );
+    console.error('❌ Error fetching resources:', error.message);
+    
+    // Return empty array instead of error to allow frontend to use cached data
+    return NextResponse.json({
+      success: false,
+      count: 0,
+      data: [],
+      error: 'Database connection issue. Please try again later.',
+      message: error.message
+    }, { status: 200 }); // Return 200 instead of 500 so frontend can handle gracefully
   }
 }
