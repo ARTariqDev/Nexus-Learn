@@ -18,6 +18,17 @@ export default function DynamicSubjectPage({ config, dataFiles }) {
   const [dbResources, setDbResources] = useState([])
   const [loading, setLoading] = useState(true)
 
+  // Cache key for localStorage
+  const getCacheKey = (type, subject) => {
+    return `nexus_resources_${type}_${subject || 'all'}`
+  }
+
+  // Check if cache is still valid (24 hours)
+  const isCacheValid = (timestamp) => {
+    const CACHE_DURATION = 24 * 60 * 60 * 1000 // 24 hours in milliseconds
+    return Date.now() - timestamp < CACHE_DURATION
+  }
+
   // Fetch resources from database
   useEffect(() => {
     const fetchDbResources = async () => {
@@ -37,13 +48,48 @@ export default function DynamicSubjectPage({ config, dataFiles }) {
           params.append('subject', subject.toLowerCase().trim())
         }
 
-        console.log('Fetching DB resources:', `/api/resources?${params.toString()}`)
+        const cacheKey = getCacheKey(type, subject?.toLowerCase().trim())
+        
+        // Try to get cached data
+        if (typeof window !== 'undefined') {
+          const cached = localStorage.getItem(cacheKey)
+          if (cached) {
+            try {
+              const { data, timestamp } = JSON.parse(cached)
+              if (isCacheValid(timestamp)) {
+                console.log('✅ Using cached resources for', cacheKey)
+                setDbResources(data || [])
+                setLoading(false)
+                return
+              } else {
+                console.log('⏰ Cache expired for', cacheKey)
+              }
+            } catch (e) {
+              console.error('Error parsing cache:', e)
+            }
+          }
+        }
+
+        console.log('🔄 Fetching fresh DB resources:', `/api/resources?${params.toString()}`)
         const response = await fetch(`/api/resources?${params.toString()}`)
         
         if (response.ok) {
           const data = await response.json()
-          console.log('Fetched DB resources:', data.data)
+          console.log('✅ Fetched DB resources:', data.data)
           setDbResources(data.data || [])
+          
+          // Cache the results
+          if (typeof window !== 'undefined') {
+            try {
+              localStorage.setItem(cacheKey, JSON.stringify({
+                data: data.data,
+                timestamp: Date.now()
+              }))
+              console.log('💾 Cached resources for', cacheKey)
+            } catch (e) {
+              console.error('Error caching data:', e)
+            }
+          }
         } else {
           console.error('Failed to fetch DB resources:', response.status)
         }

@@ -23,12 +23,50 @@ export default function HomePage() {
 
   // Fetch SAT resources from database
   useEffect(() => {
+    const CACHE_KEY = 'nexus_resources_sat_all'
+    const CACHE_DURATION = 24 * 60 * 60 * 1000 // 24 hours
+    
     const fetchDbResources = async () => {
       try {
+        // Try to get cached data first
+        if (typeof window !== 'undefined') {
+          const cached = localStorage.getItem(CACHE_KEY)
+          if (cached) {
+            try {
+              const { data, timestamp } = JSON.parse(cached)
+              if (Date.now() - timestamp < CACHE_DURATION) {
+                console.log('✅ Using cached SAT resources')
+                setDbResources(data || [])
+                setLoading(false)
+                return
+              } else {
+                console.log('⏰ SAT cache expired')
+              }
+            } catch (e) {
+              console.error('Error parsing SAT cache:', e)
+            }
+          }
+        }
+
+        console.log('🔄 Fetching fresh SAT resources')
         const response = await fetch('/api/resources?type=sat')
         if (response.ok) {
           const data = await response.json()
+          console.log('✅ Fetched SAT resources:', data.data)
           setDbResources(data.data || [])
+          
+          // Cache the results
+          if (typeof window !== 'undefined') {
+            try {
+              localStorage.setItem(CACHE_KEY, JSON.stringify({
+                data: data.data,
+                timestamp: Date.now()
+              }))
+              console.log('💾 Cached SAT resources')
+            } catch (e) {
+              console.error('Error caching SAT data:', e)
+            }
+          }
         }
       } catch (error) {
         console.error('Error fetching SAT resources:', error)
