@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 import { Monoton } from "next/font/google";
+import { useEffect, useState } from "react";
 
 const monoton = Monoton({
   weight: '400',
@@ -13,10 +14,22 @@ const monoton = Monoton({
 const Header = () => {
   const router = useRouter();
   const pathname = usePathname();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    // Check if user is logged in
+    const token = localStorage.getItem('token');
+    setIsLoggedIn(!!token);
+  }, [pathname]); // Re-check when pathname changes
 
   const handleLogout = () => {
     localStorage.removeItem('token');
+    setIsLoggedIn(false);
     router.push('/');
+  };
+
+  const handleLogin = () => {
+    router.push('/login');
   };
 
   const isAuthPage = pathname === '/login' || pathname === '/signup';
@@ -63,12 +76,21 @@ const Header = () => {
               <Link href="/home" className="hover:text-[#ffaa00] hover:underline underline-offset-4 transition-colors">
                 Tutorials
               </Link>
-              <button
-                onClick={handleLogout}
-                className="hover:text-[#ec6262] hover:underline underline-offset-4 transition-colors"
-              >
-                Log-Out
-              </button>
+              {isLoggedIn ? (
+                <button
+                  onClick={handleLogout}
+                  className="hover:text-[#ec6262] hover:underline underline-offset-4 transition-colors"
+                >
+                  Log-Out
+                </button>
+              ) : (
+                <button
+                  onClick={handleLogin}
+                  className="hover:text-[#ffaa00] hover:underline underline-offset-4 transition-colors"
+                >
+                  Login
+                </button>
+              )}
             </>
           )}
         </nav>

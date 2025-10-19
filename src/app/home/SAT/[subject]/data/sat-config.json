@@ -1,0 +1,29 @@
+{
+  "subject": "SAT Preparation",
+  "sections": [
+    {
+      "id": "english",
+      "title": "SAT - English",
+      "type": "books",
+      "dataFile": "SAT.json",
+      "dataKey": "english",
+      "gridCols": "grid-cols-1 sm:grid-cols-2 lg:grid-cols-4"
+    },
+    {
+      "id": "maths",
+      "title": "SAT - Maths",
+      "type": "books",
+      "dataFile": "SAT.json",
+      "dataKey": "maths",
+      "gridCols": "grid-cols-1 sm:grid-cols-2 lg:grid-cols-4"
+    },
+    {
+      "id": "combined",
+      "title": "SAT - Combined Resources",
+      "type": "books",
+      "dataFile": "SAT.json",
+      "dataKey": "combined",
+      "gridCols": "grid-cols-1 sm:grid-cols-2 lg:grid-cols-4"
+    }
+  ]
+}

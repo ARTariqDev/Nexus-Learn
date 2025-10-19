@@ -1,0 +1,30 @@
+{
+  "subject": "Mathematics",
+  "code": "9709",
+  "sections": [
+    {
+      "id": "p1_topicals",
+      "title": "Topicals P1",
+      "type": "topical",
+      "dataFile": "Maths_Topicals.json",
+      "dataKey": "p1",
+      "gridCols": "grid-cols-1 sm:grid-cols-2 lg:grid-cols-4"
+    },
+    {
+      "id": "p3_topicals",
+      "title": "Topicals P3",
+      "type": "topical",
+      "dataFile": "Maths_Topicals.json",
+      "dataKey": "p3",
+      "gridCols": "grid-cols-1 sm:grid-cols-2 lg:grid-cols-4"
+    },
+    {
+      "id": "s1_topicals",
+      "title": "Topicals S1",
+      "type": "topical",
+      "dataFile": "Maths_Topicals.json",
+      "dataKey": "S1",
+      "gridCols": "grid-cols-1 sm:grid-cols-2 lg:grid-cols-4"
+    }
+  ]
+}

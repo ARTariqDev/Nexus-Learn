@@ -15,30 +15,6 @@ const monoton = Monoton({
 })
 
 export default function HomePage() {
-  const [isLoading, setIsLoading] = useState(true)
-  const [user, setUser] = useState(null)
-  const router = useRouter()
-
-  useEffect(() => {
-    const token = localStorage.getItem('token')
-    if (!token) {
-      router.push('/login')
-    } else {
-      setUser({ username: 'User' }) // optionally decode token if JWT
-    }
-    setIsLoading(false)
-  }, [])
-
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center h-screen bg-black text-white text-xl">
-        Loading...
-      </div>
-    )
-  }
-
-  if (!user) return null // Prevent flicker before redirect
-
   return (
     <div className="min-h-screen flex flex-col bg-[#000000] text-white">
       <div className="border-b border-[#1a1a1a] shadow-md">

@@ -43,7 +43,7 @@ export default function HomePage() {
             <div className="fade-in fade-delay-4 mx-auto">
               <Resources head="Further Maths  9231" link="Alevel/FM" size="2"/>
             </div>
-            <div className="fade-in fade-delay-4 mx-auto">
+            <div className="fade-in fade-delay-5 mx-auto">
               <Resources head="Information Technology 9626" link="Alevel/IT" size="2"/>
             </div>
           </div>

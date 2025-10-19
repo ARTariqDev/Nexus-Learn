@@ -28,6 +28,7 @@ const monoton = Monoton({
 
 const StatsPage = () => {
   const [username, setUsername] = useState(null)
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [subject, setSubject] = useState('CS')
   const [paperFilter, setPaperFilter] = useState('1')
   const [timeRange, setTimeRange] = useState('all')
@@ -39,9 +40,13 @@ const StatsPage = () => {
       try {
         const decoded = jwtDecode(token)
         setUsername(decoded.username)
+        setIsLoggedIn(true)
       } catch (err) {
         console.error('Invalid token:', err)
+        setIsLoggedIn(false)
       }
+    } else {
+      setIsLoggedIn(false)
     }
   }, [])
 
@@ -137,7 +142,30 @@ const StatsPage = () => {
             Performance Stats
         </h1>
 
-        <div className="mb-6 flex gap-4 flex-wrap justify-center">
+        {!isLoggedIn ? (
+          <div className="text-center py-20">
+            <div className="bg-[#1a1a1a] border-2 border-[#ffaa00] rounded-xl p-8 max-w-md mx-auto">
+              <h2 className="text-2xl font-bold mb-4 text-[#ffaa00]">Login Required</h2>
+              <p className="text-gray-300 mb-6">
+                You need to be logged in to view your performance statistics and track your progress.
+              </p>
+              <a
+                href="/login"
+                className="inline-block bg-[#ffaa00] text-black font-semibold px-6 py-3 rounded hover:opacity-90 transition"
+              >
+                Login to View Stats
+              </a>
+              <p className="text-gray-400 text-sm mt-4">
+                Don&apos;t have an account?{' '}
+                <a href="/signup" className="text-[#ffaa00] hover:underline">
+                  Sign up here
+                </a>
+              </p>
+            </div>
+          </div>
+        ) : (
+          <>
+            <div className="mb-6 flex gap-4 flex-wrap justify-center">
           {/* Subject Dropdown */}
           <select
             value={subject}
@@ -186,6 +214,8 @@ const StatsPage = () => {
           </div>
         ) : (
           <p className="text-center text-gray-400 mt-8">No data found for this selection.</p>
+        )}
+          </>
         )}
       </div>
 

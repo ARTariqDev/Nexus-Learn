@@ -1,21 +1,35 @@
 import mongoose from "mongoose"
+import bcrypt from 'bcryptjs'
 
 const UserSchema = new mongoose.Schema({
   username: {
     type: String,
     required: true,
     unique: true,
+    trim: true,
+    lowercase: true
   },
   email: {
     type: String,
-    required: true,
     unique: true,
-    lowercase: true, 
+    sparse: true, // Allow null for users without email
+    lowercase: true,
+    trim: true,
     match: [/^\S+@\S+\.\S+$/, "Please enter a valid email address"],
   },
   password: {
     type: String,
     required: true,
+  },
+  role: {
+    type: String,
+    enum: ['user', 'admin'],
+    default: 'user',
+    index: true
+  },
+  isActive: {
+    type: Boolean,
+    default: true
   },
   scores: [
     {
@@ -25,6 +39,31 @@ const UserSchema = new mongoose.Schema({
       date: Date,
     },
   ],
+  createdAt: {
+    type: Date,
+    default: Date.now
+  },
+  lastLogin: {
+    type: Date
+  }
 })
+
+// Hash password before saving
+UserSchema.pre('save', async function(next) {
+  if (!this.isModified('password')) return next()
+  
+  try {
+    const salt = await bcrypt.genSalt(10)
+    this.password = await bcrypt.hash(this.password, salt)
+    next()
+  } catch (error) {
+    next(error)
+  }
+})
+
+// Method to compare password
+UserSchema.methods.comparePassword = async function(candidatePassword) {
+  return bcrypt.compare(candidatePassword, this.password)
+}
 
 export default mongoose.models.User || mongoose.model("User", UserSchema)

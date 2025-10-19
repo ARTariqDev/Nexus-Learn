@@ -27,7 +27,9 @@ export default function LoginPage() {
 
     if (res.ok) {
       localStorage.setItem('token', data.token)
-      router.push('/home')
+      // Redirect based on user role
+      const redirectPath = data.redirectTo || '/home'
+      router.push(redirectPath)
     } else {
       setError(data.error || 'Login failed')
     }

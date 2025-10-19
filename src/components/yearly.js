@@ -64,7 +64,12 @@ const Yearly = ({ name, size, qp, ms, sf, text1, text2, text3, id }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    if (!username) return alert('You must be logged in to submit a score.')
+    if (!username) {
+      if (confirm('You must be logged in to save scores. Would you like to login now?')) {
+        window.location.href = '/login'
+      }
+      return
+    }
 
     const scoredInput = parseFloat(scored)
     const totalInput = parseFloat(total)

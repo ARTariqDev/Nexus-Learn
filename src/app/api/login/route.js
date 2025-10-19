@@ -16,9 +16,12 @@ export async function POST(req) {
 
     await connectToDB();
 
-    // Find user by username OR email
+    // Find user by username OR email (lowercase for case-insensitive search)
     const user = await User.findOne({
-      $or: [{ username: identifier }, { email: identifier }],
+      $or: [
+        { username: identifier.toLowerCase() }, 
+        { email: identifier.toLowerCase() }
+      ],
     });
 
     if (!user) {
@@ -27,12 +30,17 @@ export async function POST(req) {
       });
     }
 
-    const isPasswordValid = await compare(password, user.password);
+    // Use the comparePassword method from the User model
+    const isPasswordValid = await user.comparePassword(password);
     if (!isPasswordValid) {
       return new Response(JSON.stringify({ error: "Invalid credentials" }), {
         status: 401,
       });
     }
+
+    // Update last login
+    user.lastLogin = new Date();
+    await user.save();
 
     const token = jwt.sign(
       { userId: user._id, username: user.username, email: user.email },
@@ -41,7 +49,12 @@ export async function POST(req) {
     );
 
     return new Response(
-      JSON.stringify({ message: "Login successful", token }),
+      JSON.stringify({ 
+        message: "Login successful", 
+        token,
+        isAdmin: user.role === 'admin',
+        redirectTo: user.role === 'admin' ? '/admin' : '/home'
+      }),
       { status: 200 }
     );
   } catch (error) {

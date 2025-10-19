@@ -1,0 +1,39 @@
+{
+  "subject": "Further Maths",
+  "code": "9231",
+  "sections": [
+    {
+      "id": "books",
+      "title": "Books",
+      "type": "books",
+      "dataFile": "FM_Books.json",
+      "gridCols": "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
+    },
+    {
+      "id": "sa_resources",
+      "title": "Sir Amjad Resources",
+      "type": "topical",
+      "dataFile": "FM_SA.json",
+      "gridCols": "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
+    },
+    {
+      "id": "yearly",
+      "title": "Yearly Past Papers",
+      "type": "yearly",
+      "dataFile": "FM_Yearly.json",
+      "filters": {
+        "defaultYear": "2024",
+        "defaultSession": "november",
+        "defaultPaperGroup": "1",
+        "sessions": [
+          { "value": "june", "label": "May/June" },
+          { "value": "november", "label": "October/November" }
+        ],
+        "paperGroups": [
+          { "value": "1", "label": "Paper 1 (11, 12, 13)" },
+          { "value": "2", "label": "Paper 2 (21, 22, 23)" }
+        ]
+      }
+    }
+  ]
+}

@@ -15,14 +15,6 @@ const monoton = Monoton({
 
 export default function LandingPage() {
   const [fadeIn, setFadeIn] = useState(false);
-  const router = useRouter()
-
-  useEffect(() => {
-    const token = localStorage.getItem('token')
-    if (token) {
-      router.push('/home')
-    }
-  }, [router])
 
   useEffect(() => {
     setFadeIn(true);
@@ -44,17 +36,24 @@ export default function LandingPage() {
         </p>
       </header>
 
-      <nav className="flex gap-4 animate-fadeIn delay-300" aria-label="Main navigation">
-        <Link href="/login" aria-label="Log in to your account">
-          <button className="bg-[#ffaa00] text-black font-semibold px-6 py-3 rounded hover:opacity-90 hover:scale-105 transition-transform duration-300">
-            Log In
+      <nav className="flex flex-col sm:flex-row gap-4 animate-fadeIn delay-300" aria-label="Main navigation">
+        <Link href="/home" aria-label="Get started and explore resources">
+          <button className="bg-[#ffaa00] text-black font-semibold px-8 py-3 rounded hover:opacity-90 hover:scale-105 transition-transform duration-300">
+            Get Started
           </button>
         </Link>
-        <Link href="/signup" aria-label="Create a new account">
-          <button className="bg-[#121212] border border-[#ffaa00] text-white px-6 py-3 rounded hover:bg-[#1a1a1a] hover:scale-105 transition-transform duration-300">
-            Sign Up
-          </button>
-        </Link>
+        <div className="flex gap-4">
+          <Link href="/login" aria-label="Log in to your account">
+            <button className="bg-[#121212] border border-[#ffaa00] text-white font-semibold px-6 py-3 rounded hover:bg-[#1a1a1a] hover:scale-105 transition-transform duration-300">
+              Log In
+            </button>
+          </Link>
+          <Link href="/signup" aria-label="Create a new account">
+            <button className="bg-[#121212] border border-[#ffaa00] text-white font-semibold px-6 py-3 rounded hover:bg-[#1a1a1a] hover:scale-105 transition-transform duration-300">
+              Sign Up
+            </button>
+          </Link>
+        </div>
       </nav>
     </main>
   );
