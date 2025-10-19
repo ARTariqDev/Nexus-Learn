@@ -50,6 +50,9 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
+      <head>
+        <meta name="google-site-verification" content="YxlP0ZO69Mi1IrZUFTui-pWX1ZvoJ0ZvHDc6UCUMNKk" />
+      </head>
       <body className="antialiased bg-[#111111] text-white min-h-screen font-sans">
         {children}
         <Analytics />
