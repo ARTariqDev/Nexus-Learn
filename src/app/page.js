@@ -39,7 +39,7 @@ export default function LandingPage() {
       <nav className="flex flex-col sm:flex-row gap-4 animate-fadeIn delay-300" aria-label="Main navigation">
         <Link href="/home" aria-label="Get started and explore resources">
           <button className="bg-[#ffaa00] text-black font-semibold px-8 py-3 rounded hover:opacity-90 hover:scale-105 transition-transform duration-300">
-            Get Started
+            Continue as Guest
           </button>
         </Link>
         <div className="flex gap-4">
